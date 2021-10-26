@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title')</title>
 
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
@@ -17,7 +17,7 @@
     @yield('css')
 </head>
 
-<body class="bg-gray-100 h-screen antialiased font-sans">
+<body class="bg-gray-100 h-screen antialiased font-mont">
     <div id="app">
         <header class="bg-gray-800 py-6">
             <div class="container mx-auto flex justify-between items-center">
@@ -38,7 +38,7 @@
 
                         <a href="{{ route('logout') }}" class="no-underline hover:underline"
                             onclick="event.preventDefault();
-                                                                                                        document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
+                                                                                                                document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
                             {{ csrf_field() }}
                         </form>

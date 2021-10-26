@@ -26,7 +26,7 @@ class HomeController extends Controller
     public function index()
     {
         $channels = Channel::all();
-        $discussions = Discussion::paginate(5);
-        return view('index', compact('channels', 'discussions'));
+        $recent_discussions = Discussion::latest()->take(5)->get();
+        return view('index', compact('channels', 'recent_discussions'));
     }
 }

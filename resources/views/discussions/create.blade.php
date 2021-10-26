@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    Discussions | Create
+@endsection
+
 @section('content')
 
     <div class="bg-white rounded-md shadow-lg overflow-hidden">

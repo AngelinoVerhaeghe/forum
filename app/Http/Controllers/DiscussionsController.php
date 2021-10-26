@@ -27,7 +27,7 @@ class DiscussionsController extends Controller
      */
     public function index()
     {
-        $discussions = Discussion::paginate(5);
+        $discussions = Discussion::latest()->paginate(5);
         return view('discussions.index')->with(compact('discussions'));
     }
 
@@ -49,6 +49,7 @@ class DiscussionsController extends Controller
      */
     public function store(CreateDiscussionRequest $request)
     {
+        //auth()->user()->discussions()->create([])
         Discussion::create([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
@@ -68,9 +69,10 @@ class DiscussionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Discussion $discussion)
     {
-        //
+
+        return view('discussions.show', ['discussion' => $discussion]);
     }
 
     /**
