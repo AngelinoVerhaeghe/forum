@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DiscussionsController;
+use App\Http\Controllers\RepliesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,6 @@ Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('i
 
 Route::resource('discussions', DiscussionsController::class);
 
+Route::resource('discussions/{discussion}/replies', RepliesController::class);
+
+Route::post('discussions/{discussion}/replies/{reply}/mark-as-best-reply', [\App\Http\Controllers\DiscussionsController::class, 'reply'])->name('discussions.best-reply');

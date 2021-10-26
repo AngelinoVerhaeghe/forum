@@ -2,26 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reply;
 use App\Models\Discussion;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\CreateDiscussionRequest;
-use App\Models\Channel;
-use App\Models\Reply;
+use App\Http\Requests\CreateReplyRequest;
 
-class DiscussionsController extends Controller
+class RepliesController extends Controller
 {
-
-    /**
-     * Only authenticated users can create or store a discussion.
-     *
-     */
-    public function __construct()
-    {
-        $this->middleware('auth')->only(['create', 'store']);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -29,9 +17,7 @@ class DiscussionsController extends Controller
      */
     public function index()
     {
-        $channels = Channel::all();
-        $discussions = Discussion::latest()->paginate(5);
-        return view('discussions.index')->with(compact('discussions', 'channels'));
+        //
     }
 
     /**
@@ -41,8 +27,7 @@ class DiscussionsController extends Controller
      */
     public function create()
     {
-        $channels = Channel::all();
-        return view('discussions.create', compact('channels'));
+        //
     }
 
     /**
@@ -51,20 +36,18 @@ class DiscussionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateDiscussionRequest $request)
+    public function store(CreateReplyRequest $request, Discussion $discussion)
     {
-        //auth()->user()->discussions()->create([])
-        Discussion::create([
-            'title' => $request->title,
-            'slug' => Str::slug($request->title),
-            'content' => $request->content,
-            'channel_id' => $request->channel,
+        Reply::create([
             'user_id' => Auth::id(),
+            'discussion_id' => $discussion->id,
+            'content' => $request->content
         ]);
 
-        session()->flash('success', 'Discussion has been created successfully.');
+        session()->flash('success', 'Reply added.');
 
-        return redirect()->route('discussions.index');
+        return redirect()->back();
+
     }
 
     /**
@@ -73,10 +56,9 @@ class DiscussionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Discussion $discussion)
+    public function show($id)
     {
-
-        return view('discussions.show', ['discussion' => $discussion]);
+        //
     }
 
     /**
@@ -111,14 +93,5 @@ class DiscussionsController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function reply(Discussion $discussion, Reply $reply)
-    {
-        $discussion->markAsBestReply($reply);
-
-        session()->flash('success', 'Marked as best reply.');
-
-        return redirect()->back();
     }
 }
